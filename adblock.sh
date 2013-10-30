@@ -12,11 +12,15 @@ wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|grep "^127.0.0.1"
 wget -qO- "http://hosts-file.net/.\ad_servers.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 wget -qO- "http://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 
-#Sort the download lists
+#Add black list
+sed -e 's/^/127.0.0.1\t/g' /etc/black.list >> /tmp/block.build.list
+
+#Sort the download/black lists
 sed -e 's/\r//g' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
 
 #Sort white list
 sed -e 's/\r//g' /etc/white.list > /tmp/white.list
+
 
 #Filter the blacklist, supressing whitelist matches
 grep -vf /tmp/white.list /tmp/block.build.before > /etc/block.hosts
