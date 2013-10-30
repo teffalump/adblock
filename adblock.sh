@@ -21,7 +21,6 @@ sed -e 's/\r//g' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
 #Sort white list
 sed -e 's/\r//g' /etc/white.list > /tmp/white.list
 
-
 #Filter the blacklist, supressing whitelist matches
 grep -vf /tmp/white.list /tmp/block.build.before > /etc/block.hosts
 
