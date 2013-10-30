@@ -1,0 +1,5 @@
+#/etc/firewall.user
+
+#Add these two lines
+iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53
+iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53
