@@ -16,7 +16,7 @@ wget -qO- "http://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.li
 sed -e 's/^/127.0.0.1\t/g' /etc/black.list >> /tmp/block.build.list
 
 #Sort the download/black lists
-sed -e 's/\r//g' 's/^127.0.0.1[ ]\+/127.0.0.1\t/g' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
+sed -e 's/\r//g' -e 's/^127.0.0.1[ ]\+/127.0.0.1\t/g' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
 
 #Sort white list
 sed -e 's/\r//g' /etc/white.list > /tmp/white.list
