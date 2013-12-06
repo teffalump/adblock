@@ -12,17 +12,20 @@ wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|grep "^127.0.0.1"
 wget -qO- "http://hosts-file.net/.\ad_servers.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 wget -qO- "http://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 
-#Add black list
-sed -e 's/^/127.0.0.1\t/g' /etc/black.list >> /tmp/block.build.list
+#Add black list, if non-empty
+[ -s "/etc/black.list" ] && sed -e 's/^/127.0.0.1\t/g' /etc/black.list >> /tmp/block.build.list
 
 #Sort the download/black lists
 sed -e 's/\r//g' -e 's/^127.0.0.1[ ]\+/127.0.0.1\t/g' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
 
-#Sort white list
-sed -e 's/\r//g' /etc/white.list > /tmp/white.list
-
-#Filter the blacklist, supressing whitelist matches
-grep -vf /tmp/white.list /tmp/block.build.before > /etc/block.hosts
+if [ -s "/etc/white.list" ]
+then
+    #Filter the blacklist, supressing whitelist matches
+    sed -e 's/\r//g' /etc/white.list > /tmp/white.list
+    grep -vf /tmp/white.list /tmp/block.build.before > /etc/block.hosts
+else
+    cat /tmp/block.build.before > /etc/block.hosts
+fi
 
 #Delete files used to build list to free up the limited space
 rm -f /tmp/white.list
