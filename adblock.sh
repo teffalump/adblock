@@ -23,12 +23,12 @@ then
     #Filter the blacklist, supressing whitelist matches
     sed -e 's/\r//g' /etc/white.list > /tmp/white.list
     grep -vf /tmp/white.list /tmp/block.build.before > /etc/block.hosts
+    rm -f /tmp/white.list
 else
     cat /tmp/block.build.before > /etc/block.hosts
 fi
 
 #Delete files used to build list to free up the limited space
-rm -f /tmp/white.list
 rm -f /tmp/block.build.before
 rm -f /tmp/block.build.list
 
