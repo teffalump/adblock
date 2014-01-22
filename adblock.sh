@@ -7,7 +7,7 @@
 rm -f /etc/block.hosts
 
 #Download and process the files needed to make the lists (add more, if you want)
-wget -qO- http://www.mvps.org/winhelp2002/hosts.txt|grep "^127.0.0.1" > /tmp/block.build.list
+wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| sed 's/0.0.0.0/127.0.0.1/g' |grep "^127.0.0.1" > /tmp/block.build.list
 wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|grep "^127.0.0.1" >> /tmp/block.build.list
 wget -qO- "http://hosts-file.net/.\ad_servers.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 wget -qO- "http://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
