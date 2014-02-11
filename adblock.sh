@@ -22,12 +22,12 @@ wget -qO- "http://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.li
 [ -s "/etc/black.list" ] && awk '/^[^#]/ { print "127.0.0.1",$1 }' /etc/black.list >> /tmp/block.build.list
 
 #Sort the download/black lists
-awk '{ sub(/\r$/,""); print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
+awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
 
 if [ -s "/etc/white.list" ]
 then
     #Filter the blacklist, supressing whitelist matches
-    awk '/^[^#]/ { sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.before > /etc/block.hosts
+    awk '/^[^#]/ {sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.before > /etc/block.hosts
 else
     cat /tmp/block.build.before > /etc/block.hosts
 fi
