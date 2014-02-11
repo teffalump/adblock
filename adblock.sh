@@ -13,10 +13,10 @@ wget -qO- "http://hosts-file.net/.\ad_servers.txt"|grep "^127.0.0.1" >> /tmp/blo
 wget -qO- "http://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 
 #Add black list, if non-empty
-[ -s "/etc/black.list" ] && sed -e 's/^/127.0.0.1\t/g' /etc/black.list >> /tmp/block.build.list
+[ -s "/etc/black.list" ] && sed -e 's/^/127.0.0.1 /g' /etc/black.list >> /tmp/block.build.list
 
 #Sort the download/black lists
-sed -e 's/\r//g' -e 's/^127.0.0.1[ ]\+/127.0.0.1\t/g' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
+awk '{ $1=$1;sub(/\r$/,""); print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
 
 if [ -s "/etc/white.list" ]
 then
