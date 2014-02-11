@@ -1,10 +1,10 @@
 #!/bin/sh
 #Put in /etc/adblock.sh
 
-#Check proper DHCP config
-uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit
-
 #Script to grab and sort a list of adservers and malware
+
+#Check proper DHCP config and, if necessary, update it
+uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit
 
 #Delete the old block.hosts to make room for the updates
 rm -f /etc/block.hosts
