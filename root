@@ -1,4 +1,0 @@
-#/etc/crontabs/root
-
-#Add the following line
-00 4 * * 0,3 sh /etc/adblock.sh
