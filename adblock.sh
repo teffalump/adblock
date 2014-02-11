@@ -7,7 +7,7 @@
 uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit
 
 #Leave crontab alone, or add to it
-grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "00 4 * * 0,3 sh /etc/adblock.sh" >> /etc/crontabs/root
+grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "0 4 * * 0,3 sh /etc/adblock.sh" >> /etc/crontabs/root
 
 #Delete the old block.hosts to make room for the updates
 rm -f /etc/block.hosts
