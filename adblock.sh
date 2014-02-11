@@ -27,9 +27,7 @@ awk '{ sub(/\r$/,""); print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block
 if [ -s "/etc/white.list" ]
 then
     #Filter the blacklist, supressing whitelist matches
-    sed -e 's/\r//g' /etc/white.list > /tmp/white.list
-    grep -vf /tmp/white.list /tmp/block.build.before > /etc/block.hosts
-    rm -f /tmp/white.list
+    sed -e 's/\r//g' /etc/white.list | grep -vf - /tmp/block.build.before > /etc/block.hosts
 else
     cat /tmp/block.build.before > /etc/block.hosts
 fi
