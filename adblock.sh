@@ -26,7 +26,7 @@ wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.
 
 echo 'Sorting lists...'
 #Sort the download/black lists
-awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
+awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort -u > /tmp/block.build.before
 
 echo 'Adding ipv6 support...'
 #Add ipv6 support
