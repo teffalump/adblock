@@ -12,6 +12,7 @@ grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "0 4 * * 0,3 sh /etc/adbloc
 #Delete the old block.hosts to make room for the updates
 rm -f /etc/block.hosts
 
+echo 'Downloading hosts lists...'
 #Download and process the files needed to make the lists (add more, if you want)
 wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| awk '/^0.0.0.0/' > /tmp/block.build.list
 wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
@@ -23,12 +24,15 @@ wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.
 #Add black list, if non-empty
 [ -s "/etc/black.list" ] && awk '/^[^#]/ { print "0.0.0.0",$1 }' /etc/black.list >> /tmp/block.build.list
 
+echo 'Sorting lists...'
 #Sort the download/black lists
 awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
 
+echo 'Adding ipv6 support...'
 #Add ipv6 support
 awk '1;{print "::",$2}' /tmp/block.build.before > /tmp/block.build.tmp && mv /tmp/block.build.tmp /tmp/block.build.before
 
+echo 'Filtering white list (if applicable)...'
 if [ -s "/etc/white.list" ]
 then
     #Filter the blacklist, supressing whitelist matches
@@ -37,6 +41,7 @@ else
     cat /tmp/block.build.before > /etc/block.hosts
 fi
 
+echo 'Cleaning up...'
 #Delete files used to build list to free up the limited space
 rm -f /tmp/block.build.before
 rm -f /tmp/block.build.list
