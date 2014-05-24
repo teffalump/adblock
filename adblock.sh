@@ -55,6 +55,7 @@ echo 'Cleaning up...'
 rm -f /tmp/block.build.before
 rm -f /tmp/block.build.list
 
+echo 'Restarting dnsmasq...'
 #Restart dnsmasq
 /etc/init.d/dnsmasq restart
 
