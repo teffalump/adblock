@@ -23,8 +23,8 @@ wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.
 #Add black list, if non-empty
 [ -s "/etc/black.list" ] && awk '/^[^#]/ { print "0.0.0.0",$1 }' /etc/black.list >> /tmp/block.build.list
 
-#Sort the download/black lists
-awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
+#Sort the download/black lists and add ipv6 support
+awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort|uniq|awk '1;{print "::",$2}' > /tmp/block.build.before
 
 if [ -s "/etc/white.list" ]
 then
