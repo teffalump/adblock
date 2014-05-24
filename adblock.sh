@@ -70,7 +70,7 @@ rm -f /tmp/block.build.list
 if [ "$FIREWALL_EDITED" -ne "0" ]
 then
     echo 'Restarting firewall...'
-    /etc/init.d/firewall restart
+    /etc/init.d/firewall restart > /dev/null 2>&1
 fi
 
 echo 'Restarting dnsmasq...'
