@@ -13,15 +13,15 @@ grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "0 4 * * 0,3 sh /etc/adbloc
 rm -f /etc/block.hosts
 
 #Download and process the files needed to make the lists (add more, if you want)
-wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| sed 's/0.0.0.0/127.0.0.1/g' |grep "^127.0.0.1" > /tmp/block.build.list
-wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|grep "^127.0.0.1" >> /tmp/block.build.list
-wget -qO- "http://hosts-file.net/.\ad_servers.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
+wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| awk '/^0.0.0.0/' > /tmp/block.build.list
+wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
+wget -qO- "http://hosts-file.net/.\ad_servers.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
 
 #need GNU wget from opkg since busbox wget doesn't handle https well (for me at least!)
 wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
 
 #Add black list, if non-empty
-[ -s "/etc/black.list" ] && awk '/^[^#]/ { print "127.0.0.1",$1 }' /etc/black.list >> /tmp/block.build.list
+[ -s "/etc/black.list" ] && awk '/^[^#]/ { print "0.0.0.0",$1 }' /etc/black.list >> /tmp/block.build.list
 
 #Sort the download/black lists
 awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort|uniq > /tmp/block.build.before
