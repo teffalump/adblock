@@ -50,7 +50,7 @@ awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort -u > /tmp/block.bui
 echo 'Adding ipv6 support...'
 
 #Add ipv6 support
-awk '1;{print "::",$2}' /tmp/block.build.before > /tmp/block.build.tmp && mv /tmp/block.build.tmp /tmp/block.build.before
+sed -ire 's/^(0\.0\.0\.0) (.*)/\1 \2\n:: \2/g' /tmp/block.build.before
 
 if [ -s "/etc/white.list" ]
 then
