@@ -36,6 +36,7 @@ echo 'Filtering white list (if applicable)...'
 if [ -s "/etc/white.list" ]
 then
     #Filter the blacklist, supressing whitelist matches
+    #  This is relatively slow =-(
     awk '/^[^#]/ {sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.before > /etc/block.hosts
 else
     cat /tmp/block.build.before > /etc/block.hosts
