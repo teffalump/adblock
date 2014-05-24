@@ -35,10 +35,12 @@ wget -qO- "http://hosts-file.net/.\ad_servers.txt"|awk '{sub(/^127.0.0.1/, "0.0.
 #need GNU wget from opkg since BusyBox wget doesn't handle https well (for me it seems, lol)
 wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
 
-echo 'Adding blacklist, if necessary...'
-
 #Add black list, if non-empty
-[ -s "/etc/black.list" ] && awk '/^[^#]/ { print "0.0.0.0",$1 }' /etc/black.list >> /tmp/block.build.list
+if [ -s "/etc/black.list" ]
+then
+    echo 'Adding blacklist...'
+    awk '/^[^#]/ { print "0.0.0.0",$1 }' /etc/black.list >> /tmp/block.build.list
+fi
 
 echo 'Sorting lists...'
 
@@ -50,12 +52,11 @@ echo 'Adding ipv6 support...'
 #Add ipv6 support
 awk '1;{print "::",$2}' /tmp/block.build.before > /tmp/block.build.tmp && mv /tmp/block.build.tmp /tmp/block.build.before
 
-echo 'Filtering white list, if necessary...'
-
 if [ -s "/etc/white.list" ]
 then
     #Filter the blacklist, supressing whitelist matches
     #  This is relatively slow =-(
+    echo 'Filtering white list...'
     awk '/^[^#]/ {sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.before > /etc/block.hosts
 else
     cat /tmp/block.build.before > /etc/block.hosts
