@@ -8,6 +8,7 @@ FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
 FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
 CRON="0 4 * * 0,3 sh /etc/adblock.sh"
 DNSMASQ_EDITED="1"
+FIREWALL_EDITED="1"
 
 echo 'Updating config, if necessary...'
 
@@ -18,8 +19,8 @@ uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 && DNSMASQ_EDITED="0" || uci
 grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "$CRON" >> /etc/crontabs/root
 
 #Add firewall rules if necessary
-grep -q "$FW1" /etc/firewall.user || echo "$FW1" >> /etc/firewall.user
-grep -q "$FW2" /etc/firewall.user || echo "$FW2" >> /etc/firewall.user
+grep -q "$FW1" /etc/firewall.user && FIREWALL_EDITED="0" || echo "$FW1" >> /etc/firewall.user
+grep -q "$FW2" /etc/firewall.user && FIREWALL_EDITED="0" || echo "$FW2" >> /etc/firewall.user
 
 #Delete the old block.hosts to make room for the updates
 rm -f /etc/block.hosts
@@ -65,6 +66,12 @@ echo 'Cleaning up...'
 #Delete files used to build list to free up the limited space
 rm -f /tmp/block.build.before
 rm -f /tmp/block.build.list
+
+if [ "$FIREWALL_EDITED" -ne "0 ]
+then
+    echo 'Restarting firewall...'
+    /etc/init.d/firewall restart
+fi
 
 echo 'Restarting dnsmasq...'
 
