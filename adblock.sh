@@ -17,7 +17,7 @@ wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| sed 's/0.0.0.0/127.0.0.1/g'
 wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|grep "^127.0.0.1" >> /tmp/block.build.list
 wget -qO- "http://hosts-file.net/.\ad_servers.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 
-#need GNU wget from opkg since this redirects to https
+#need GNU wget from opkg since busbox wget doesn't handle https well (for me at least!)
 wget -qO- "https://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 
 #Add black list, if non-empty
