@@ -18,7 +18,7 @@ wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|grep "^127.0.0.1"
 wget -qO- "http://hosts-file.net/.\ad_servers.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
 
 #need GNU wget from opkg since busbox wget doesn't handle https well (for me at least!)
-wget -qO- "https://adaway.org/hosts.txt"|grep "^127.0.0.1" >> /tmp/block.build.list
+wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
 
 #Add black list, if non-empty
 [ -s "/etc/black.list" ] && awk '/^[^#]/ { print "127.0.0.1",$1 }' /etc/black.list >> /tmp/block.build.list
