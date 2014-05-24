@@ -75,4 +75,5 @@ then
 else
     /etc/init.d/dnsmasq restart
 fi
+
 exit 0
