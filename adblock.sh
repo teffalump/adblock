@@ -67,7 +67,7 @@ echo 'Cleaning up...'
 rm -f /tmp/block.build.before
 rm -f /tmp/block.build.list
 
-if [ "$FIREWALL_EDITED" -ne "0 ]
+if [ "$FIREWALL_EDITED" -ne "0" ]
 then
     echo 'Restarting firewall...'
     /etc/init.d/firewall restart
