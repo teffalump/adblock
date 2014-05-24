@@ -7,12 +7,12 @@
 FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
 FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
 CRON="0 4 * * 0,3 sh /etc/adblock.sh"
-CRON_EDITED="0"
+CRON_EDITED="1"
 
 echo 'Updating config, if necessary...'
 
 #Check proper DHCP config and, if necessary, update it
-uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit && CRON_EDITED="1"
+uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 && CRON_EDITED="0" || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit
 
 #Leave crontab alone, or add to it
 grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "$CRON" >> /etc/crontabs/root
