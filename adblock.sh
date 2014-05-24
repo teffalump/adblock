@@ -7,11 +7,12 @@
 FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
 FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
 CRON="0 4 * * 0,3 sh /etc/adblock.sh"
+CRON_EDITED="0"
 
 echo 'Updating config, if necessary...'
 
 #Check proper DHCP config and, if necessary, update it
-uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit
+uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit && CRON_EDITED="1"
 
 #Leave crontab alone, or add to it
 grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "$CRON" >> /etc/crontabs/root
@@ -68,6 +69,10 @@ rm -f /tmp/block.build.list
 echo 'Restarting dnsmasq...'
 
 #Restart dnsmasq
-/etc/init.d/dnsmasq restart
-
+if [ "$CRON_EDITED" -eq "0" ]
+then
+    pkill -HUP dnsmasq
+else
+    /etc/init.d/dnsmasq restart
+fi
 exit 0
