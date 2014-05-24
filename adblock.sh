@@ -31,7 +31,8 @@ then
     #Filter the blacklist, supressing whitelist matches, add ipv6 support
     awk '/^[^#]/ {sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.before|awk '1;{print "::",$2}' > /etc/block.hosts
 else
-    cat /tmp/block.build.before > /etc/block.hosts
+    #add ipv6 support
+    awk '1;{print "::",$2}' /tmp/block.build.before > /etc/block.hosts
 fi
 
 #Delete files used to build list to free up the limited space
