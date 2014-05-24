@@ -1,13 +1,21 @@
 #!/bin/sh
 #Put in /etc/adblock.sh
 
+FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
+FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
+CRON="0 4 * * 0,3 sh /etc/adblock.sh"
+
 #Script to grab and sort a list of adservers and malware
 
 #Check proper DHCP config and, if necessary, update it
 uci get dhcp.@dnsmasq[0].addnhosts > /dev/null 2>&1 || uci add_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts && uci commit
 
 #Leave crontab alone, or add to it
-grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "0 4 * * 0,3 sh /etc/adblock.sh" >> /etc/crontabs/root
+grep -q "/etc/adblock.sh" /etc/crontabs/root || echo "$CRON" >> /etc/crontabs/root
+
+#Add firewall rules if necessary
+grep -q "$FW1" /etc/firewall.user || echo "$FW1" >> /etc/firewall.user
+grep -q "$FW2" /etc/firewall.user || echo "$FW2" >> /etc/firewall.user
 
 #Delete the old block.hosts to make room for the updates
 rm -f /etc/block.hosts
