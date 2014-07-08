@@ -7,6 +7,8 @@ if command -v pkill > /dev/null
 then
     echo 'Found pkill!'
 else
+    echo 'Updating package list...'
+    opkg update > /dev/null
     echo 'Installing procps package...'
     opkg install procps
 fi
@@ -15,6 +17,8 @@ if opkg list-installed | grep -q iptables-mod-nat-extra
 then
     echo 'iptables-mod-nat-extra is installed!'
 else
+    echo 'Updating package list...'
+    opkg update > /dev/null
     echo 'Installing iptables-mod-nat-extra...'
     opkg install iptables-mod-nat-extra
 fi
