@@ -10,7 +10,7 @@ else
     echo 'Updating package list...'
     opkg update > /dev/null
     echo 'Installing procps package...'
-    opkg install procps
+    opkg install procps > /dev/null
 fi
 
 if opkg list-installed | grep -q iptables-mod-nat-extra
@@ -20,7 +20,7 @@ else
     echo 'Updating package list...'
     opkg update > /dev/null
     echo 'Installing iptables-mod-nat-extra...'
-    opkg install iptables-mod-nat-extra
+    opkg install iptables-mod-nat-extra > /dev/null
 fi
 
 
