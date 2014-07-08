@@ -1,7 +1,16 @@
 #!/bin/sh
 #Put in /etc/adblock.sh
 
-#Script to grab and sort a list of adservers and malware
+#Block ads, malware, etc.
+
+command -v pkill || echo 'Install procps package: opkg install procps' && exit 1
+if opkg list-installed | grep -q iptables-mod-nat-extra
+then
+    echo 'Prereqs met'
+else
+    echo 'Install iptables-mod-nat-extra: opkg install iptables-mod-nat-extra' && exit 1
+fi
+
 
 #Pre-defined commands (change the cron command to what is comfortable, or leave as is)
 FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
