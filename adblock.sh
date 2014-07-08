@@ -3,10 +3,16 @@
 
 #Block ads, malware, etc.
 
-command -v pkill || echo 'Install procps package: opkg install procps' && exit 1
+if command -v pkill > /dev/null
+then
+    echo 'Found pkill!'
+else
+    echo 'Install procps package: opkg install procps' && exit 1
+fi
+
 if opkg list-installed | grep -q iptables-mod-nat-extra
 then
-    echo 'Prereqs met'
+    echo 'iptables-mod-nat-extra is installed!'
 else
     echo 'Install iptables-mod-nat-extra: opkg install iptables-mod-nat-extra' && exit 1
 fi
