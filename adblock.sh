@@ -3,6 +3,7 @@
 
 #Block ads, malware, etc.
 
+#Need pkill installed
 if command -v pkill > /dev/null
 then
     echo 'Found pkill!'
@@ -13,6 +14,7 @@ else
     opkg install procps > /dev/null
 fi
 
+#Need iptables-mod-nat-extra installed
 if opkg list-installed | grep -q iptables-mod-nat-extra
 then
     echo 'iptables-mod-nat-extra is installed!'
