@@ -10,7 +10,7 @@ then
 else
     echo 'Updating package list...'
     opkg update > /dev/null
-    echo 'Installing procps package...'
+    echo 'Installing procps-pkill package...'
     opkg install procps-pkill > /dev/null
 fi
 
