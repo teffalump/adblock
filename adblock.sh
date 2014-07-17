@@ -11,7 +11,7 @@ else
     echo 'Updating package list...'
     opkg update > /dev/null
     echo 'Installing procps package...'
-    opkg install procps > /dev/null
+    opkg install procps-pkill > /dev/null
 fi
 
 #Need iptables-mod-nat-extra installed
