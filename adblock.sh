@@ -26,10 +26,19 @@ else
     opkg install iptables-mod-nat-extra > /dev/null
 fi
 
+# Only block wireless ads? Y/N
+ONLY_WIRELESS="N"
 
-#Pre-defined commands (change the cron command to what is comfortable, or leave as is)
-FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
-FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
+if [ "$ONLY_WIRELESS" == "Y" ]
+then
+    FW1="iptables -t nat -I PREROUTING -i wlan0 -p tcp --dport 53 -j REDIRECT --to-ports 53"
+    FW2="iptables -t nat -I PREROUTING -i wlan0 -p udp --dport 53 -j REDIRECT --to-ports 53"
+else
+    FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
+    FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
+fi
+
+#Change the cron command to what is comfortable, or leave as is
 CRON="0 4 * * 0,3 sh /etc/adblock.sh"
 DNSMASQ_EDITED="1"
 FIREWALL_EDITED="1"
