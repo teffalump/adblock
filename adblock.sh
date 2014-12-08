@@ -60,10 +60,10 @@ rm -f /etc/block.hosts
 
 echo 'Downloading hosts lists...'
 
-#Download and process the files needed to make the lists (add more, if you want)
+#Download and process the files needed to make the lists (enable/add more, if you want)
 wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| awk '/^0.0.0.0/' > /tmp/block.build.list
-wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
-wget -qO- "http://hosts-file.net/.\ad_servers.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
+#wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
+#wget -qO- "http://hosts-file.net/.\ad_servers.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
 
 #need GNU wget from opkg since BusyBox wget doesn't handle https well (for me it seems, lol)
 wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
@@ -80,11 +80,7 @@ echo 'Sorting lists...'
 #Sort the download/black lists
 awk '{sub(/\r$/,"");print $1,$2}' /tmp/block.build.list|sort -u > /tmp/block.build.before
 
-echo 'Adding ipv6 support...'
-
-#Add ipv6 support
-sed -i -re 's/^(0\.0\.0\.0) (.*)$/\1 \2\n:: \2/g' /tmp/block.build.before
-
+#Filter (if applicable)
 if [ -s "/etc/white.list" ]
 then
     #Filter the blacklist, supressing whitelist matches
@@ -94,6 +90,11 @@ then
 else
     cat /tmp/block.build.before > /etc/block.hosts
 fi
+
+echo 'Adding ipv6 support...'
+
+#Add ipv6 support
+sed -i -re 's/^(0\.0\.0\.0) (.*)$/\1 \2\n:: \2/g' /etc/block.hosts
 
 echo 'Cleaning up...'
 
