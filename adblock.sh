@@ -31,6 +31,7 @@ ONLY_WIRELESS="N"
 
 if [ "$ONLY_WIRELESS" == "Y" ]
 then
+    echo 'Wireless only blocking!'
     FW1="iptables -t nat -I PREROUTING -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
     FW2="iptables -t nat -I PREROUTING -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
 else
