@@ -86,9 +86,9 @@ then
     #Filter the blacklist, supressing whitelist matches
     #  This is relatively slow =-(
     echo 'Filtering white list...'
-    awk '/^[^#]/ {sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.before > /etc/block.hosts
+    awk '/^[^#]/ {sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.list > /etc/block.hosts
 else
-    cat /tmp/block.build.before > /etc/block.hosts
+    cat /tmp/block.build.list > /etc/block.hosts
 fi
 
 echo 'Adding ipv6 support...'
@@ -99,7 +99,6 @@ sed -i -re 's/^(0\.0\.0\.0) (.*)$/\1 \2\n:: \2/g' /etc/block.hosts
 echo 'Cleaning up...'
 
 #Delete files used to build list to free up the limited space
-rm -f /tmp/block.build.before
 rm -f /tmp/block.build.list
 
 if [ "$FIREWALL_EDITED" -ne "0" ]
