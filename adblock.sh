@@ -31,8 +31,8 @@ ONLY_WIRELESS="N"
 
 if [ "$ONLY_WIRELESS" == "Y" ]
 then
-    FW1="iptables -t nat -I PREROUTING -i wlan0 -p tcp --dport 53 -j REDIRECT --to-ports 53"
-    FW2="iptables -t nat -I PREROUTING -i wlan0 -p udp --dport 53 -j REDIRECT --to-ports 53"
+    FW1="iptables -t nat -I PREROUTING -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
+    FW2="iptables -t nat -I PREROUTING -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
 else
     FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
     FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
