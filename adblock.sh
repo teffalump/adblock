@@ -87,7 +87,7 @@ then
     #Filter the blacklist, supressing whitelist matches
     #  This is relatively slow =-(
     echo 'Filtering white list...'
-    awk '/^[^#]/ {sub(/\r$/,"");print $1}' /etc/white.list | grep -vf - /tmp/block.build.list > /etc/block.hosts
+    egrep -v "^[[:space:]]*$" /etc/white.list | awk '/^[^#]/ {sub(/\r$/,"");print $1}' | grep -vf - /tmp/block.build.list > /etc/block.hosts
 else
     cat /tmp/block.build.list > /etc/block.hosts
 fi
