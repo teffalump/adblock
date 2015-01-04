@@ -26,6 +26,17 @@ else
     opkg install iptables-mod-nat-extra > /dev/null
 fi
 
+#Need wget for https websites
+if opkg list-installed wget | grep -q wget
+then
+    echo 'full wget found'
+else
+    echo 'Updating package list...'
+    opkg update > /dev/null
+    echo 'Installing wget...'
+    opkg install wget > /dev/null
+fi
+
 # Only block wireless ads? Y/N
 ONLY_WIRELESS="N"
 
