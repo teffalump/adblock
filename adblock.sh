@@ -23,11 +23,17 @@ fi
 #Need wget for https websites
 if opkg list-installed wget | grep -q wget
 then
-    echo 'full wget found'
+    if wget --version | grep -q +ssl
+    then
+        echo 'wget (with ssl) found'
+    else
+       # wget without ssl, need to reinstall full wget
+       opkg update > /dev/null
+       opkg install wget --force-reinstall > /dev/null
 else
     echo 'Updating package list...'
     opkg update > /dev/null
-    echo 'Installing wget...'
+    echo 'Installing wget (with ssl)...'
     opkg install wget > /dev/null
 fi
 
