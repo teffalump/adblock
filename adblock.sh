@@ -30,6 +30,7 @@ then
        # wget without ssl, need to reinstall full wget
        opkg update > /dev/null
        opkg install wget --force-reinstall > /dev/null
+    fi
 else
     echo 'Updating package list...'
     opkg update > /dev/null
