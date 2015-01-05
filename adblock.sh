@@ -3,6 +3,12 @@
 
 #Block ads, malware, etc.
 
+# Only block wireless ads? Y/N
+ONLY_WIRELESS="N"
+
+# IPv6 support? Y/N
+IPV6="N"
+
 #Need iptables-mod-nat-extra installed
 if opkg list-installed | grep -q iptables-mod-nat-extra
 then
@@ -25,8 +31,6 @@ else
     opkg install wget > /dev/null
 fi
 
-# Only block wireless ads? Y/N
-ONLY_WIRELESS="N"
 
 if [ "$ONLY_WIRELESS" == "Y" ]
 then
@@ -91,10 +95,11 @@ else
     cat /tmp/block.build.list > /etc/block.hosts
 fi
 
-echo 'Adding ipv6 support...'
-
-#Add ipv6 support
-sed -i -re 's/^(0\.0\.0\.0) (.*)$/\1 \2\n:: \2/g' /etc/block.hosts
+if [ "$IPV6" == "Y" ]
+then
+    echo 'Adding ipv6 support...'
+    sed -i -re 's/^(0\.0\.0\.0) (.*)$/\1 \2\n:: \2/g' /etc/block.hosts
+fi
 
 echo 'Cleaning up...'
 
