@@ -3,18 +3,6 @@
 
 #Block ads, malware, etc.
 
-#Need pkill installed
-if command -v pkill > /dev/null
-then
-    echo 'Found pkill!'
-else
-    echo 'Updating package list...'
-    opkg update > /dev/null
-    echo 'Installing procps/procps-pkill package...'
-    opkg install procps > /dev/null
-    opkg install procps-pkill > /dev/null
-fi
-
 #Need iptables-mod-nat-extra installed
 if opkg list-installed | grep -q iptables-mod-nat-extra
 then
@@ -124,7 +112,7 @@ echo 'Restarting dnsmasq...'
 #Restart dnsmasq
 if [ "$DNSMASQ_EDITED" -eq "0" ]
 then
-    pkill -HUP dnsmasq
+    killall -HUP dnsmasq
 else
     /etc/init.d/dnsmasq restart
 fi
