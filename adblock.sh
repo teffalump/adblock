@@ -114,7 +114,12 @@ rm -f /tmp/block.build.list
 if [ "$FIREWALL_EDITED" -ne "0" ]
 then
     echo 'Restarting firewall...'
-    /etc/init.d/firewall restart > /dev/null 2>&1
+    if [ -s "/usr/lib/gargoyle/restart_firewall.sh" ]
+    then
+        /usr/lib/gargoyle/restart_firewall.sh > /dev/null 2>&1
+    else
+        /etc/init.d/firewall restart > /dev/null 2>&1
+    fi
 fi
 
 echo 'Restarting dnsmasq...'
