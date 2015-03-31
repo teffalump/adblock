@@ -13,6 +13,9 @@ IPV6="N"
 ENDPOINT_IP4="0.0.0.0"
 ENDPOINT_IP6="::"
 
+#Change the cron command to what is comfortable, or leave as is
+CRON="0 4 * * 0,3 sh /etc/adblock.sh"
+
 #Need iptables-mod-nat-extra installed
 if opkg list-installed | grep -q iptables-mod-nat-extra
 then
@@ -53,8 +56,7 @@ else
     FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
 fi
 
-#Change the cron command to what is comfortable, or leave as is
-CRON="0 4 * * 0,3 sh /etc/adblock.sh"
+
 DNSMASQ_EDITED="1"
 FIREWALL_EDITED="1"
 
@@ -76,16 +78,16 @@ rm -f /etc/block.hosts
 echo 'Downloading hosts lists...'
 
 #Download and process the files needed to make the lists (enable/add more, if you want)
-wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| awk '/^0.0.0.0/' > /tmp/block.build.list
-wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
-#wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
-#wget -qO- "http://hosts-file.net/.\ad_servers.txt"|awk '{sub(/^127.0.0.1/, "0.0.0.0")} /^0.0.0.0/' >> /tmp/block.build.list
+wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| awk -v r="$ENDPOINT_IP4" '/^r/' > /tmp/block.build.list
+wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk -v r="$ENDPOINT_IP4 '{sub(/^127.0.0.1/, r)} /^r/' >> /tmp/block.build.list
+#wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|awk -v r="$ENDPOINT_IP4 '{sub(/^127.0.0.1/, r)} /^r/' >> /tmp/block.build.list
+#wget -qO- "http://hosts-file.net/.\ad_servers.txt"|awk -v r="$ENDPOINT_IP4" '{sub(/^127.0.0.1/, r)} /^r/' >> /tmp/block.build.list
 
 #Add black list, if non-empty
 if [ -s "/etc/black.list" ]
 then
     echo 'Adding blacklist...'
-    awk '/^[^#]/ { print "0.0.0.0",$1 }' /etc/black.list >> /tmp/block.build.list
+    awk -v r="$ENDPOINT_IP4" '/^[^#]/ { print r,$1 }' /etc/black.list >> /tmp/block.build.list
 fi
 
 echo 'Sorting lists...'
@@ -104,10 +106,13 @@ else
     cat /tmp/block.build.before > /etc/block.hosts
 fi
 
+safe_pattern=$(printf '%s\n' "$ENDPOINT_IP4" | sed 's/[[\.*^$(){}?+|/]/\\&/g')
+safe_addition=$(printf '%s\n' "$ENDPOINT_IP6" | sed 's/[\&/]/\\&/g')
+
 if [ "$IPV6" == "Y" ]
 then
     echo 'Adding ipv6 support...'
-    sed -i -re 's/^(0\.0\.0\.0) (.*)$/\1 \2\n:: \2/g' /etc/block.hosts
+    sed -i -re 's/^(${safe_pattern}) (.*)$/\1 \2\n${safe_addition} \2/g' /etc/block.hosts
 fi
 
 echo 'Cleaning up...'
