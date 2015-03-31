@@ -112,7 +112,7 @@ safe_addition=$(printf '%s\n' "$ENDPOINT_IP6" | sed 's/[\&/]/\\&/g')
 if [ "$IPV6" == "Y" ]
 then
     echo 'Adding ipv6 support...'
-    sed -i -re 's/^(${safe_pattern}) (.*)$/\1 \2\n${safe_addition} \2/g' /etc/block.hosts
+    sed -i -re "s/^(${safe_pattern}) (.*)$/\1 \2\n${safe_addition} \2/g" /etc/block.hosts
 fi
 
 echo 'Cleaning up...'
