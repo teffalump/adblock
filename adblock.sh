@@ -95,7 +95,7 @@ then
     #Filter the blacklist, supressing whitelist matches
     #  This is relatively slow =-(
     echo 'Filtering white list...'
-    egrep -v "^[[:space:]]*$" /etc/white.list | awk '/^[^#]/ {sub(/\r$/,"");print $1}' | grep -vf - /tmp/block.build.list > /etc/block.hosts
+    egrep -v "^[[:space:]]*$" /etc/white.list | awk '/^[^#]/ {sub(/\r$/,"");print $1}' | grep -vf - /tmp/block.build.before > /etc/block.hosts
 else
     cat /tmp/block.build.list > /etc/block.hosts
 fi
@@ -110,6 +110,7 @@ echo 'Cleaning up...'
 
 #Delete files used to build list to free up the limited space
 rm -f /tmp/block.build.list
+rm -f /tmp/block.build.before
 
 if [ "$FIREWALL_EDITED" -ne "0" ]
 then
