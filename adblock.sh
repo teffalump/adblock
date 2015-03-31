@@ -97,7 +97,7 @@ then
     echo 'Filtering white list...'
     egrep -v "^[[:space:]]*$" /etc/white.list | awk '/^[^#]/ {sub(/\r$/,"");print $1}' | grep -vf - /tmp/block.build.before > /etc/block.hosts
 else
-    cat /tmp/block.build.list > /etc/block.hosts
+    cat /tmp/block.build.before > /etc/block.hosts
 fi
 
 if [ "$IPV6" == "Y" ]
