@@ -9,6 +9,10 @@ ONLY_WIRELESS="N"
 # IPv6 support? Y/N
 IPV6="N"
 
+# Redirect endpoint
+ENDPOINT_IP4="0.0.0.0"
+ENDPOINT_IP6="::"
+
 #Need iptables-mod-nat-extra installed
 if opkg list-installed | grep -q iptables-mod-nat-extra
 then
