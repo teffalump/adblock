@@ -9,6 +9,10 @@ ONLY_WIRELESS="N"
 # IPv6 support? Y/N
 IPV6="N"
 
+# Try to transparently serve pixel response?
+#   NOTE: Ideally, understand the consequences and mechanics of this setup
+TRANS="N"
+
 # Redirect endpoint
 ENDPOINT_IP4="0.0.0.0"
 ENDPOINT_IP6="::"
@@ -74,6 +78,38 @@ grep -q "$FW2" /etc/firewall.user && FIREWALL_EDITED="0" || echo "$FW2" >> /etc/
 
 #Delete the old block.hosts to make room for the updates
 rm -f /etc/block.hosts
+
+# Determining uhttpd/httpd_gargoyle for transparent pixel support
+if [ "$TRANS" == "Y" ]
+then
+    ENDPOINT_IP4=$(uci get network.lan.ipaddr)
+    if [ "$IPV6" == "Y"]
+    then
+        ENDPOINT_IP6=$(uci get network.lan6.ipaddr)
+    fi
+    if [ ! -e "/www/1.gif" ]
+    then
+        /usr/bin/wget -O /www/1.gif http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif  > /dev/null
+    fi
+    if [ -s "/usr/sbin/httpd_gargoyle" ]
+    then
+        echo "httpd_gargoyle found..."
+        if [ $(uci get httpd_gargoyle.server.page_not_found_file) != "1.gif" ]
+        then
+            echo "updating server error page to return transparent pixel..."
+            uci set httpd_gargoyle.server.page_not_find_file="1.gif" && uci commit
+        fi
+    elif [ -s "/usr/sbin/uhttpd" ]
+    then
+        echo "uhttpd found..."
+        if [ $(uci get uhttpd.server.page_not_found_file) != "1.gif" ]
+        then
+            echo "updating server error page to return transparent pixel..."
+            uci set uhttpd.server.page_not_find_file="1.gif" && uci commit
+        fi
+    else
+        echo "Cannot find supported web server..."
+fi
 
 echo 'Downloading hosts lists...'
 
