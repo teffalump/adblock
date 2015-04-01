@@ -97,7 +97,7 @@ then
         if [ $(uci get httpd_gargoyle.server.page_not_found_file) != "1.gif" ]
         then
             echo "updating server error page to return transparent pixel..."
-            uci set httpd_gargoyle.server.page_not_find_file="1.gif" && uci commit
+            uci set httpd_gargoyle.server.page_not_found_file="1.gif" && uci commit
         fi
     elif [ -s "/usr/sbin/uhttpd" ]
     then
