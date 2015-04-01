@@ -101,12 +101,10 @@ then
         fi
     elif [ -s "/usr/sbin/uhttpd" ]
     then
+        #The default is none, so I don't want to check for it, so just write it
         echo "uhttpd found..."
-        if [ $(uci get uhttpd.main.error_page) != "/1.gif" ]
-        then
-            echo "updating server error page to return transparent pixel..."
-            uci set uhttpd.main.error_page="/1.gif" && uci commit
-        fi
+        echo "updating server error page to return transparent pixel..."
+        uci set uhttpd.main.error_page="/1.gif" && uci commit
     else
         echo "Cannot find supported web server..."
 fi
