@@ -107,6 +107,7 @@ then
         /etc/init.d/uhttpd restart
     else
         echo "Cannot find supported web server..."
+    fi
 fi
 
 echo 'Downloading hosts lists...'
