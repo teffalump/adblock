@@ -91,20 +91,20 @@ then
     then
         /usr/bin/wget -O /www/1.gif http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif  > /dev/null
     fi
-    if [ -s "/usr/sbin/httpd_gargoyle" ]
-    then
-        # Write without testing
-        echo "httpd_gargoyle found..."
-        echo "updating server error page to return transparent pixel..."
-        uci set httpd_gargoyle.server.page_not_found_file="1.gif" && uci commit
-        /etc/init.d/httpd_gargoyle restart
-    elif [ -s "/usr/sbin/uhttpd" ]
+    if [ -s "/usr/sbin/uhttpd" ]
     then
         #The default is none, so I don't want to check for it, so just write it
         echo "uhttpd found..."
         echo "updating server error page to return transparent pixel..."
         uci set uhttpd.main.error_page="/1.gif" && uci commit
         /etc/init.d/uhttpd restart
+    elif [ -s "/usr/sbin/httpd_gargoyle" ]
+    then
+        # Write without testing
+        echo "httpd_gargoyle found..."
+        echo "updating server error page to return transparent pixel..."
+        uci set httpd_gargoyle.server.page_not_found_file="1.gif" && uci commit
+        /etc/init.d/httpd_gargoyle restart
     else
         echo "Cannot find supported web server..."
     fi
