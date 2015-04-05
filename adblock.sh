@@ -13,7 +13,7 @@ IPV6="N"
 #   NOTE: Ideally, understand the consequences and mechanics of this setup
 TRANS="N"
 
-# Exclude range ip
+# Exempt an ip range
 EXCLUDE="N"
 START_RANGE="192.168.1.0"
 END_RANGE="192.168.1.255"
