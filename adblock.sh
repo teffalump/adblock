@@ -14,7 +14,7 @@ IPV6="N"
 TRANS="N"
 
 # Exempt an ip range
-EXCLUDE="N"
+EXEMPT="N"
 START_RANGE="192.168.1.0"
 END_RANGE="192.168.1.255"
 
@@ -58,7 +58,7 @@ fi
 if [ "$ONLY_WIRELESS" == "Y" ]
 then
     echo 'Wireless only blocking!'
-    if [ "$EXCLUDE" == "Y" ]
+    if [ "$EXEMPT" == "Y" ]
     then
         echo 'Exempting some ips...'
         FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
@@ -68,7 +68,7 @@ then
         FW2="iptables -t nat -I PREROUTING -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
     fi
 else
-    if [ "$EXCLUDE" == "Y" ]
+    if [ "$EXEMPT" == "Y" ]
     then
         echo "Exempting some ips..."
         FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -p tcp --dport 53 -j REDIRECT --to-ports 53"
