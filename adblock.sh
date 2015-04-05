@@ -13,6 +13,11 @@ IPV6="N"
 #   NOTE: Ideally, understand the consequences and mechanics of this setup
 TRANS="N"
 
+# Exclude range ip
+EXCLUDE="N"
+START_RANGE="192.168.1.0"
+END_RANGE="192.168.1.255"
+
 # Redirect endpoint
 ENDPOINT_IP4="0.0.0.0"
 ENDPOINT_IP6="::"
@@ -53,11 +58,24 @@ fi
 if [ "$ONLY_WIRELESS" == "Y" ]
 then
     echo 'Wireless only blocking!'
-    FW1="iptables -t nat -I PREROUTING -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
-    FW2="iptables -t nat -I PREROUTING -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
+    if [ "$EXCLUDE" == "Y" ]
+    then
+        echo 'Excluding some ips...'
+        FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
+        FW2="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
+    else
+        FW1="iptables -t nat -I PREROUTING -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
+        FW2="iptables -t nat -I PREROUTING -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
+    fi
 else
-    FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
-    FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
+    if [ "$EXCLUDE" == "Y" ]
+    then
+        FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -p tcp --dport 53 -j REDIRECT --to-ports 53"
+        FW2="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -p udp --dport 53 -j REDIRECT --to-ports 53"
+    else
+        FW1="iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53"
+        FW2="iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53"
+    fi
 fi
 
 
