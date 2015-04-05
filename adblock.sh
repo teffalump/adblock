@@ -60,7 +60,7 @@ then
     echo 'Wireless only blocking!'
     if [ "$EXCLUDE" == "Y" ]
     then
-        echo 'Excluding some ips...'
+        echo 'Exempting some ips...'
         FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
         FW2="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
     else
@@ -70,6 +70,7 @@ then
 else
     if [ "$EXCLUDE" == "Y" ]
     then
+        echo "Exempting some ips..."
         FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -p tcp --dport 53 -j REDIRECT --to-ports 53"
         FW2="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -p udp --dport 53 -j REDIRECT --to-ports 53"
     else
