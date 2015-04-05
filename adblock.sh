@@ -106,6 +106,8 @@ then
         uci set httpd_gargoyle.server.page_not_found_file="1.gif" && uci commit
         /etc/init.d/httpd_gargoyle restart
     else
+        ENDPOINT_IP4="0.0.0.0"
+        ENDPOINT_IP6="::"
         echo "Cannot find supported web server..."
     fi
 fi
