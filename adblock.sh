@@ -36,6 +36,20 @@ else
     opkg install iptables-mod-nat-extra > /dev/null
 fi
 
+#Need iptable-mod-iprange for exemption
+if [ "$EXEMPT" == "Y" ]
+then 
+    if opkg list-installed | grep -q iptables-mod-iprange
+    then
+        echo 'iptables-mod-iprange installed'
+    else
+        echo 'Updating package list...'
+        opkg update > /dev/null
+        echo 'Installing iptables-mod-iprange...'
+        opkg install iptables-mod-iptables > /dev/null
+    fi
+fi
+
 #Need wget for https websites
 if opkg list-installed wget | grep -q wget
 then
