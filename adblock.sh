@@ -46,7 +46,7 @@ then
         echo 'Updating package list...'
         opkg update > /dev/null
         echo 'Installing iptables-mod-iprange...'
-        opkg install iptables-mod-iptables > /dev/null
+        opkg install iptables-mod-iprange > /dev/null
     fi
 fi
 
