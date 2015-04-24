@@ -10,8 +10,7 @@ ONLY_WIRELESS="N"
 IPV6="N"
 
 # Try to transparently serve pixel response?
-#   Recommendation: No.
-#   Otherwise, understand the consequences and mechanics of this setup
+#   If enabled, understand the consequences and mechanics of this setup
 TRANS="N"
 
 # Exempt an ip range
