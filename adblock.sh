@@ -9,6 +9,9 @@ ONLY_WIRELESS="N"
 # IPv6 support? Y/N
 IPV6="N"
 
+# Need SSL websites?
+SSL="N"
+
 # Try to transparently serve pixel response?
 #   If enabled, understand the consequences and mechanics of this setup
 TRANS="N"
@@ -51,21 +54,24 @@ then
 fi
 
 #Need wget for https websites
-if opkg list-installed wget | grep -q wget
+if [ "$SSL" == "Y" ]
 then
-    if wget --version | grep -q +ssl
+    if opkg list-installed wget | grep -q wget
     then
-        echo 'wget (with ssl) found'
+        if wget --version | grep -q +ssl
+        then
+            echo 'wget (with ssl) found'
+        else
+            # wget without ssl, need to reinstall full wget
+            opkg update > /dev/null
+            opkg install wget --force-reinstall > /dev/null
+        fi
     else
-       # wget without ssl, need to reinstall full wget
-       opkg update > /dev/null
-       opkg install wget --force-reinstall > /dev/null
+        echo 'Updating package list...'
+        opkg update > /dev/null
+        echo 'Installing wget (with ssl)...'
+        opkg install wget > /dev/null
     fi
-else
-    echo 'Updating package list...'
-    opkg update > /dev/null
-    echo 'Installing wget (with ssl)...'
-    opkg install wget > /dev/null
 fi
 
 
@@ -149,7 +155,7 @@ echo 'Downloading hosts lists...'
 
 #Download and process the files needed to make the lists (enable/add more, if you want)
 wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| awk -v r="$ENDPOINT_IP4" '{sub(/^0.0.0.0/, r)} $0 ~ "^"r' > /tmp/block.build.list
-wget -qO- --no-check-certificate "https://adaway.org/hosts.txt"|awk -v r="$ENDPOINT_IP4" '{sub(/^127.0.0.1/, r)} $0 ~ "^"r' >> /tmp/block.build.list
+wget -qO- "http://adaway.org/hosts.txt"|awk -v r="$ENDPOINT_IP4" '{sub(/^127.0.0.1/, r)} $0 ~ "^"r' >> /tmp/block.build.list
 #wget -qO- http://www.malwaredomainlist.com/hostslist/hosts.txt|awk -v r="$ENDPOINT_IP4" '{sub(/^127.0.0.1/, r)} $0 ~ "^"r' >> /tmp/block.build.list
 #wget -qO- "http://hosts-file.net/.\ad_servers.txt"|awk -v r="$ENDPOINT_IP4" '{sub(/^127.0.0.1/, r)} $0 ~ "^"r' >> /tmp/block.build.list
 
