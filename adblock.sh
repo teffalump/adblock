@@ -264,9 +264,11 @@ toggle()
     if grep -q "adblock" /etc/crontabs/root
     then
         # Turn off
+        echo 'Turning off!'
         remove_config
     else
         # Turn on
+        echo 'Turning on!'
         add_config
     fi
 
