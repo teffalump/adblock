@@ -265,16 +265,15 @@ toggle()
     then
         # Turn off
         remove_config
-        restart_firewall
-        restart_dnsmasq 1
-        restart_http
     else
         # Turn on
         add_config
-        restart_firewall
-        restart_dnsmasq 1
-        restart_http
     fi
+
+    # Restart services
+    restart_firewall
+    restart_dnsmasq 1
+    restart_http
 }
 
 #### END FUNCTIONS ####
@@ -285,7 +284,6 @@ case "$1" in
     # Toggle on/off
     "-t")
         toggle
-        cleanup
         ;;
     #First time run
     "-f")
