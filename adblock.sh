@@ -243,7 +243,7 @@ restart_http()
 remove_config()
 {
     # Remove addnhosts
-    uci del_list dhcp.@dnsmasq[0].addnhosts=/etc/block.list > /dev/null 2>&1 && uci commit
+    uci del_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts > /dev/null 2>&1 && uci commit
 
     # Remove cron entry
     sed -i '/adblock\.sh/d' /etc/crontabs/root
