@@ -122,7 +122,7 @@ rm -f /etc/block.hosts
 if [ "$TRANS" == "Y" ]
 then
     ENDPOINT_IP4=$(uci get network.lan.ipaddr)
-    if [ "$IPV6" == "Y"]
+    if [ "$IPV6" == "Y" ]
     then
         ENDPOINT_IP6=$(uci get network.lan6.ipaddr)
     fi
