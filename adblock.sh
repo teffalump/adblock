@@ -248,7 +248,7 @@ remove_config()
     uci del_list dhcp.@dnsmasq[0].addnhosts=/etc/block.hosts > /dev/null 2>&1 && uci commit
 
     # Remove cron entry
-    sed -i '/adblock\.sh/d' /etc/crontabs/root
+    sed -i '/adblock/d' /etc/crontabs/root
 
     # Remove firewall rules
     sed -i '/--to-ports 53/d' /etc/firewall.user
