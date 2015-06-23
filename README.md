@@ -7,7 +7,7 @@ If you are running the script for the first time:
     # chmod +x /etc/adblock.sh
     # sh /etc/adblock.sh -f
 
-There should be status updates in the output, but there should be *no* errors.
+There should be status updates in the output, but there should be *no* errors. If no errors, you are good to go.
 
 ## Whitelists and blacklists
 
