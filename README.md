@@ -19,6 +19,8 @@ NOTE: The whitelist support is pretty stupid, so don't expect smart filtering (e
 
 ## Advanced use
 
+### Configuration 
+
 The config section of the script has some variables that alter the behaviour of the script.
 
 For example, if you change:
@@ -32,3 +34,9 @@ to
 Then only the wireless interface of the router will filter the blocklist.
 
 See the config section of the script for more variables.
+
+### Toggle on and off
+
+To toggle the blocking on and off, run the script with the -t switch:
+
+    sh /etc/adblock.sh -t
