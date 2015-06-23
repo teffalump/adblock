@@ -13,9 +13,9 @@ There should be status updates in the output, but there should be *no* errors.
 
 The script supports defining whitelisted urls. That is, urls that will be filtered out of the downloaded blocklists. To whitelist urls, place them (one per line) in */etc/white.list*.
 
-NOTE: The whitelist support is pretty stupid, so don't expect smart filtering (e.g., domain extrapolation).
+Similarly, the script supports defining blacklisted urls - urls that will be added to the downloaded blocklists. To blacklist urls, place them (one per line) in */etc/black.list*.
 
-Similarly, the script supports defining blacklisted urls. That is, urls that will be added to the downloaded blocklists. To blacklist urls, place them (one per line) in /etc/black.list.
+NOTE: The whitelist support is pretty stupid, so don't expect smart filtering (e.g., domain extrapolation).
 
 ## Advanced use
 
