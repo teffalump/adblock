@@ -1,4 +1,4 @@
-# Instructions
+ # Instructions
 
 ## Basic use
 
@@ -39,10 +39,10 @@ See the config section of the script for more variables.
 
 To toggle the blocking on and off, run the script with the -t switch:
 
-    sh /etc/adblock.sh -t
+    # sh /etc/adblock.sh -t
 
 ### Manually update blocklist
 
 To manually update the blocklist, run the script without switches:
 
-   sh /etc/adblock.sh
+    # sh /etc/adblock.sh
