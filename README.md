@@ -15,7 +15,7 @@ The script supports defining whitelisted urls. That is, urls that will be filter
 
 Similarly, the script supports defining blacklisted urls - urls that will be added to the downloaded blocklists. To blacklist urls, place them (one per line) in */etc/black.list*.
 
-NOTE: The whitelist support is pretty stupid, so don't expect smart filtering (e.g., domain extrapolation).
+NOTE: The whitelist support is pretty stupid, so don't expect smart filtering (e.g., domain extrapolation). I've found it tedious, but worthwhile, to find the offending url in */etc/block.hosts* and copy it to */etc/white.list*.
 
 ## Advanced use
 
