@@ -1,5 +1,3 @@
- # Instructions
-
 ## Basic use
 
 If you are running the script for the first time:
