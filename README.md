@@ -1,6 +1,6 @@
 ## Description
 
-In its basic usage, this script will modify the router in order to intercept DNS queries and return, for blocked addresses, the ip **0.0.0.0**. Put simply, the router will tell your computer that the blocked address is located on your own computer. Consequently, when you try to connect to the address, your computer will refuse the connection, and you'll never see those blocked hostnames. Since the address blocklist is full of advertising, malware, and tracking servers, this setup is generally a good thing. However, it is leaky, so do not expect everything to be blocked.
+In its basic usage, this script will modify the router such that blocked addresses are said to be on your own computer. Consequently, when you try to connect to the address, your computer will refuse the connection, and you'll never see those blocked hostnames. Since the address blocklist is full of advertising, malware, and tracking servers, this setup is generally a good thing. However, it is leaky, so do not expect everything to be blocked.
 
 ## Basic usage
 
