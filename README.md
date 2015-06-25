@@ -9,7 +9,7 @@ If you are running the script for the first time:
     # chmod +x /etc/adblock.sh
     # sh /etc/adblock.sh -f
 
-There should be status updates in the output, but there should be *no* errors. If there are no errors, you should be good to go.
+There should be status updates in the output, but there should be *no* errors. If these commands complete without errors, the adblocking is active. You can test it by looking up, say, google-analytics.com.
 
 ## Whitelists and blacklists
 
