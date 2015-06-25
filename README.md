@@ -27,11 +27,11 @@ The config section of the script has some variables that alter the behaviour of 
 
 For example, if you change:
 
-    ONLY_WIRELESS = "N"
+    ONLY_WIRELESS="N"
     
 to
 
-    ONLY_WIRELESS = "Y"
+    ONLY_WIRELESS="Y"
     
 Then only the wireless interface of the router will filter the blocklist.
 
