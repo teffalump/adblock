@@ -21,6 +21,18 @@ NOTE: The whitelist support is pretty stupid, so don't expect smart filtering (e
 
 ## Advanced usage
 
+### Toggle on and off
+
+To toggle the blocking on and off, run the script with the -t switch:
+
+    # sh /etc/adblock.sh -t
+
+### Manually update blocklist
+
+To manually update the blocklist, run the script without switches:
+
+    # sh /etc/adblock.sh
+
 ### Configuration 
 
 The config section of the script has some variables that alter the behaviour of the script.
@@ -41,7 +53,7 @@ To change the configuration of an already active installation. I would toggle th
     ...modify variables...
     # sh /etc/adblock.sh -t # turn on
 
-All variables:
+Configurable variables:
 
 * ONLY_WIRELESS (Y/N): Only filter on wireless interface
 * EXEMPT (Y/N): Exempt ip range from filtering (between START_RANGE and END_RANGE)
@@ -50,15 +62,3 @@ All variables:
 * TRANS (Y/N): Modify router web server to server transparent pixel responses for blocked websites
 * ENDPOINT_*: Define the IP to return for blocked hostnames (IPv4 and IPv6)
 * CRON: The cron line to put in the crontab
-
-### Toggle on and off
-
-To toggle the blocking on and off, run the script with the -t switch:
-
-    # sh /etc/adblock.sh -t
-
-### Manually update blocklist
-
-To manually update the blocklist, run the script without switches:
-
-    # sh /etc/adblock.sh
