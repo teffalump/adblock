@@ -2,11 +2,22 @@
 
 In its basic usage, this script will modify the router such that blocked addresses are null routed and unreachable. Since the address blocklist is full of advertising, malware, and tracking servers, this setup is generally a good thing. In addition, the router will update the blocklist weekly. However, the blocking is leaky, so do not expect everything to be blocked.
 
+## Setup
+
+The script must be copied to an OpenWRT router (gargoyle firmwark works fine, too).
+
+For example, if the router is located at 192.168.1.1:
+
+    # scp adblock.sh root@192.168.1.1:/etc/adblock.sh
+
+Make the script executable:
+
+    # chmod +x /etc/adblock.sh
+
 ## Basic usage
 
 If you are running the script for the first time:
 
-    # chmod +x /etc/adblock.sh
     # sh /etc/adblock.sh -f
 
 There should be status updates in the output, but there should be *no* errors. If these commands complete without errors, the adblocking is active. You can test it by looking up, say, [google analytics](https://www.google-analytics.com).
