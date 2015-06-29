@@ -1,6 +1,6 @@
 ## Description
 
-In its basic usage, this script will modify the router such that blocked addresses are said to be on your own computer. Consequently, when you try to connect to the address, your computer will refuse the connection, and you'll never see those blocked hostnames. Since the address blocklist is full of advertising, malware, and tracking servers, this setup is generally a good thing. In addition, the router will update the blocklist weekly. However, the blocking is leaky, so do not expect everything to be blocked.
+In its basic usage, this script will modify the router such that blocked addresses are null routed and unreachable. Since the address blocklist is full of advertising, malware, and tracking servers, this setup is generally a good thing. In addition, the router will update the blocklist weekly. However, the blocking is leaky, so do not expect everything to be blocked.
 
 ## Basic usage
 
