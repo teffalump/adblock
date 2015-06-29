@@ -131,11 +131,6 @@ add_config()
     # Determining uhttpd/httpd_gargoyle for transparent pixel support
     if [ "$TRANS" == "Y" ]
     then
-        ENDPOINT_IP4=$(uci get network.lan.ipaddr)
-        if [ "$IPV6" == "Y" ]
-        then
-            ENDPOINT_IP6=$(uci get network.lan6.ipaddr)
-        fi
         if [ ! -e "/www/1.gif" ]
         then
             /usr/bin/wget -O /www/1.gif http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif  > /dev/null
@@ -153,8 +148,6 @@ add_config()
             echo "updating server error page to return transparent pixel..."
             uci set httpd_gargoyle.server.page_not_found_file="1.gif" && uci commit
         else
-            ENDPOINT_IP4="0.0.0.0"
-            ENDPOINT_IP6="::"
             echo "Cannot find supported web server..."
         fi
     fi
@@ -165,6 +158,12 @@ update_blocklist()
     #Delete the old block.hosts to make room for the updates
     rm -f /etc/block.hosts
 
+    # Correct endpoint for transparent pixel response
+    if [ "$TRANS" == "Y" ]
+    then
+        ENDPOINT_IP4=$(uci get network.lan.ipaddr)
+    fi
+    
     echo 'Downloading hosts lists...'
     #Download and process the files needed to make the lists (enable/add more, if you want)
     wget -qO- http://www.mvps.org/winhelp2002/hosts.txt| awk -v r="$ENDPOINT_IP4" '{sub(/^0.0.0.0/, r)} $0 ~ "^"r' > /tmp/block.build.list
@@ -197,6 +196,10 @@ update_blocklist()
 
     if [ "$IPV6" == "Y" ]
     then
+        if [ "$TRANS" == "Y" ]
+        then
+            ENDPOINT_IP6=$(uci get network.lan6.ipaddr)
+        fi
         safe_pattern=$(printf '%s\n' "$ENDPOINT_IP4" | sed 's/[[\.*^$(){}?+|/]/\\&/g')
         safe_addition=$(printf '%s\n' "$ENDPOINT_IP6" | sed 's/[\&/]/\\&/g')
         echo 'Adding ipv6 support...'
