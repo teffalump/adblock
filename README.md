@@ -4,7 +4,7 @@ In its basic usage, this script will modify the router such that blocked address
 
 ## Setup
 
-The script must be copied to an OpenWRT router (gargoyle firmwark works fine, too).
+The script must be copied to an OpenWRT router (gargoyle firmware works fine, too).
 
 For example, if the router is located at 192.168.1.1:
 
