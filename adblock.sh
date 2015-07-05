@@ -55,7 +55,7 @@ install_dependencies()
     fi
 
     #Need iptable-mod-iprange for exemption
-    if [ "$EXEMPT" == "Y" ]
+    if [ "$EXEMPT" = "Y" ]
     then 
         if opkg list-installed | grep -q iptables-mod-iprange
         then
@@ -69,7 +69,7 @@ install_dependencies()
     fi
 
     #Need wget for https websites
-    if [ "$SSL" == "Y" ]
+    if [ "$SSL" = "Y" ]
     then
         if opkg list-installed wget | grep -q wget
         then
@@ -92,10 +92,10 @@ install_dependencies()
 
 add_config()
 {
-    if [ "$ONLY_WIRELESS" == "Y" ]
+    if [ "$ONLY_WIRELESS" = "Y" ]
     then
         echo 'Wireless only blocking!'
-        if [ "$EXEMPT" == "Y" ]
+        if [ "$EXEMPT" = "Y" ]
         then
             echo 'Exempting some ips...'
             FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -i wlan+ -p tcp --dport 53 -j REDIRECT --to-ports 53"
@@ -105,7 +105,7 @@ add_config()
             FW2="iptables -t nat -I PREROUTING -i wlan+ -p udp --dport 53 -j REDIRECT --to-ports 53"
         fi
     else
-        if [ "$EXEMPT" == "Y" ]
+        if [ "$EXEMPT" = "Y" ]
         then
             echo "Exempting some ips..."
             FW1="iptables -t nat -I PREROUTING -m iprange ! --src-range $START_RANGE-$END_RANGE -p tcp --dport 53 -j REDIRECT --to-ports 53"
@@ -129,7 +129,7 @@ add_config()
     echo "$FW2" >> /etc/firewall.user
 
     # Determining uhttpd/httpd_gargoyle for transparent pixel support
-    if [ "$TRANS" == "Y" ]
+    if [ "$TRANS" = "Y" ]
     then
         if [ ! -e "/www/1.gif" ]
         then
@@ -159,10 +159,10 @@ update_blocklist()
     rm -f /etc/block.hosts
 
     # Correct endpoint for transparent pixel response
-    if [ "$TRANS" == "Y" ] && [ -e "/www/1.gif" ] && ([ -s "/usr/sbin/uhttpd" ] || [ -s "/usr/sbin/httpd_gargoyle" ])
+    if [ "$TRANS" = "Y" ] && [ -e "/www/1.gif" ] && ([ -s "/usr/sbin/uhttpd" ] || [ -s "/usr/sbin/httpd_gargoyle" ])
     then
         ENDPOINT_IP4=$(uci get network.lan.ipaddr)
-        if [ "$IPV6" == "Y" ]
+        if [ "$IPV6" = "Y" ]
         then
             ENDPOINT_IP6=$(uci get network.lan6.ipaddr)
         fi
@@ -198,7 +198,7 @@ update_blocklist()
         cat /tmp/block.build.before > /etc/block.hosts
     fi
 
-    if [ "$IPV6" == "Y" ]
+    if [ "$IPV6" = "Y" ]
     then
         safe_pattern=$(printf '%s\n' "$ENDPOINT_IP4" | sed 's/[[\.*^$(){}?+|/]/\\&/g')
         safe_addition=$(printf '%s\n' "$ENDPOINT_IP6" | sed 's/[\&/]/\\&/g')
