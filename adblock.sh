@@ -159,9 +159,13 @@ update_blocklist()
     rm -f /etc/block.hosts
 
     # Correct endpoint for transparent pixel response
-    if [ "$TRANS" == "Y" ]
+    if [ "$TRANS" == "Y" ] && [ -e "/www/1.gif" ] && ([ -s "/usr/sbin/uhttpd" ] || [ -s "/usr/sbin/httpd_gargoyle" ])
     then
         ENDPOINT_IP4=$(uci get network.lan.ipaddr)
+        if [ "$IPV6" == "Y" ]
+        then
+            ENDPOINT_IP6=$(uci get network.lan6.ipaddr)
+        fi
     fi
     
     echo 'Downloading hosts lists...'
@@ -196,10 +200,6 @@ update_blocklist()
 
     if [ "$IPV6" == "Y" ]
     then
-        if [ "$TRANS" == "Y" ]
-        then
-            ENDPOINT_IP6=$(uci get network.lan6.ipaddr)
-        fi
         safe_pattern=$(printf '%s\n' "$ENDPOINT_IP4" | sed 's/[[\.*^$(){}?+|/]/\\&/g')
         safe_addition=$(printf '%s\n' "$ENDPOINT_IP6" | sed 's/[\&/]/\\&/g')
         echo 'Adding ipv6 support...'
