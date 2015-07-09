@@ -77,12 +77,12 @@ However, if you change certain variables, you must re-update the blocklist becau
 Configurable variables:
 
 * ONLY_WIRELESS (Y/N): Only filter on wireless interface
-* EXEMPT** (Y/N): Exempt ip range from filtering (between START_ RANGE and END_RANGE)
+* EXEMPT# (Y/N): Exempt ip range from filtering (between START_ RANGE and END_RANGE)
 * IPV6*: (Y/N): Add IPv6 support
-* SSL** (Y/N): Install wget with ssl support (only needed for ssl websites)
-* TRANS**: (Y/N): Modify router web server to server transparent pixel responses for blocked websites
+* SSL# (Y/N): Install wget with ssl support (only needed for ssl websites)
+* TRANS#: (Y/N): Modify router web server to server transparent pixel responses for blocked websites
 * ENDPOINT_IP4/IP6*: Define the IP to return for blocked hostnames (IPv4 and IPv6)
 * CRON: The cron line to put in the crontab
 
 *: Requires blocklist update.
- * * : Requires full reinstall
+#: Requires full reinstall
