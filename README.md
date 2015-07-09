@@ -84,5 +84,5 @@ Configurable variables:
 * ENDPOINT_IP4/IP6*: Define the IP to return for blocked hostnames (IPv4 and IPv6)
 * CRON: The cron line to put in the crontab
 
-* : Requires blocklist update.
+*: Requires blocklist update.
  ** : Requires full reinstall
