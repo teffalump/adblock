@@ -64,12 +64,16 @@ To change the configuration of an already active installation. I would toggle th
     ...modify variables...
     # sh /etc/adblock.sh -t # turn on
 
+However, if you change certain variables, you must re-update the blocklist because the redirection values will have changed.
+
 Configurable variables:
 
 * ONLY_WIRELESS (Y/N): Only filter on wireless interface
 * EXEMPT (Y/N): Exempt ip range from filtering (between START_RANGE and END_RANGE)
-* IPV6 (Y/N): Add IPv6 support
+* IPV6* (Y/N): Add IPv6 support
 * SSL (Y/N): Install wget with ssl support (only needed for ssl websites)
-* TRANS (Y/N): Modify router web server to server transparent pixel responses for blocked websites
-* ENDPOINT_*: Define the IP to return for blocked hostnames (IPv4 and IPv6)
+* TRANS* (Y/N): Modify router web server to server transparent pixel responses for blocked websites
+* ENDPOINT_IP4/IP6*: Define the IP to return for blocked hostnames (IPv4 and IPv6)
 * CRON: The cron line to put in the crontab
+
+Variables marked with '*' require updating the blocklist. 
