@@ -300,6 +300,17 @@ case "$1" in
         restart_http
         cleanup
         ;;
+    #Reinstall
+    "-r")
+        remove_config
+        install_dependencies
+        add_config
+        update_blocklist
+        restart_firewall
+        restart_dnsmasq 1
+        restart_http
+        cleanup
+        ;;
     #Default updates blocklist only
     *)
         update_blocklist

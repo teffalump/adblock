@@ -37,12 +37,20 @@ NOTE: The whitelist support is pretty stupid, so don't expect smart filtering (e
 To toggle the blocking on and off, run the script with the -t switch:
 
     # sh /etc/adblock.sh -t
+    
+Note: This does not delete the blocklist, whitelist, or blacklist.
 
 ### Manually update blocklist
 
 To manually update the blocklist, run the script without switches:
 
     # sh /etc/adblock.sh
+    
+### Full reinstall
+
+To reinstall the current implementation:
+
+    # sh /etc/adblock.sh -r
 
 ### Configuration 
 
@@ -64,16 +72,17 @@ To change the configuration of an already active installation. I would toggle th
     ...modify variables...
     # sh /etc/adblock.sh -t # turn on
 
-However, if you change certain variables, you must re-update the blocklist because the redirection values will have changed.
+However, if you change certain variables, you must re-update the blocklist because the redirection values will have changed. Other variables require a full restart because they must install or verify dependencies.
 
 Configurable variables:
 
 * ONLY_WIRELESS (Y/N): Only filter on wireless interface
-* EXEMPT (Y/N): Exempt ip range from filtering (between START_ RANGE and END_RANGE)
+* EXEMPT** (Y/N): Exempt ip range from filtering (between START_ RANGE and END_RANGE)
 * IPV6*: (Y/N): Add IPv6 support
-* SSL (Y/N): Install wget with ssl support (only needed for ssl websites)
-* TRANS*: (Y/N): Modify router web server to server transparent pixel responses for blocked websites
+* SSL** (Y/N): Install wget with ssl support (only needed for ssl websites)
+* TRANS**: (Y/N): Modify router web server to server transparent pixel responses for blocked websites
 * ENDPOINT_IP4/IP6*: Define the IP to return for blocked hostnames (IPv4 and IPv6)
 * CRON: The cron line to put in the crontab
 
-*: require updating the blocklist. 
+*: Requires blocklist update.
+**: Requires full reinstall
