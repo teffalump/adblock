@@ -85,4 +85,4 @@ Configurable variables:
 * CRON: The cron line to put in the crontab
 
 *: Requires blocklist update.
-#: Requires full reinstall
+ # : Requires full reinstall
