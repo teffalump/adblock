@@ -66,7 +66,7 @@ to
     
 Then only the wireless interface of the router will filter the blocklist.
 
-To change the configuration of an already active installation. I would toggle the adblocking off first, change the script, then toggle it back on. That is,
+To change the configuration of an already active installation, I would toggle the adblocking off first, change the script, then toggle it back on. That is,
 
     # sh /etc/adblock.sh -t # turn off
     ...modify variables...
