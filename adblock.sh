@@ -242,6 +242,11 @@ restart_http()
         /etc/init.d/httpd_gargoyle restart
     fi
 }
+restart_cron()
+{
+    echo 'Restarting cron...'
+    /etc/init.d/cron restart > /dev/null 2>&1
+}
 
 remove_config()
 {
@@ -261,6 +266,7 @@ remove_config()
     uci set httpd_gargoyle.server.page_not_found_file="login.sh" > /dev/null 2>&1 && uci commit
 }
 
+
 toggle()
 {
     # Check for cron as test for on/off
@@ -279,6 +285,7 @@ toggle()
     restart_firewall
     restart_dnsmasq 1
     restart_http
+    restart_cron
 }
 
 #### END FUNCTIONS ####
@@ -298,6 +305,7 @@ case "$1" in
         restart_firewall
         restart_dnsmasq 1
         restart_http
+        restart_cron
         cleanup
         ;;
     #Reinstall
@@ -309,6 +317,7 @@ case "$1" in
         restart_firewall
         restart_dnsmasq 1
         restart_http
+        restart_cron
         cleanup
         ;;
     #Default updates blocklist only
