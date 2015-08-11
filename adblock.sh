@@ -124,9 +124,15 @@ add_config()
     #Add to crontab
     echo "$CRON" >> /etc/crontabs/root
 
-    #Add firewall rules
-    echo "$FW1" >> /etc/firewall.user
-    echo "$FW2" >> /etc/firewall.user
+    #Add firewall rules (disable if Tor is running)
+    TOR=`uci get tor.global.enabled`
+    if [ "$TOR" == "0" ]
+    then
+        echo "$FW1" >> /etc/firewall.user
+        echo "$FW2" >> /etc/firewall.user
+    else
+        echo 'Error: Tor enabled - unable to update firewall rules'
+    fi
 
     # Determining uhttpd/httpd_gargoyle for transparent pixel support
     if [ "$TRANS" = "Y" ]
