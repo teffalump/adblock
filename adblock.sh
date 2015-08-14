@@ -124,15 +124,19 @@ add_config()
     #Add to crontab
     echo "$CRON" >> /etc/crontabs/root
 
-    #Add firewall rules (disable if Tor is running)
+    #Update dnsmasq config for Tor
     TOR=`uci get tor.global.enabled`
-    if [ "$TOR" == "0" ]
+    if [ "$TOR" == "1" ]
     then
-        echo "$FW1" >> /etc/firewall.user
-        echo "$FW2" >> /etc/firewall.user
-    else
-        echo 'Error: Tor enabled - unable to update firewall rules'
+        TORPORT=`uci get tor.client.dns_port`
+        TORIP="127.0.0.1:$TORPORT"
+        uci set dhcp.@dnsmasq[0].noresolv='1' > /dev/null &2>1 && uci commit
+        uci add_list dhcp.@dnsmasq[0].server="$TORIP" > /dev/null &2>1 && uci commit
     fi
+    
+    # Add firewall rules
+    echo "$FW1" >> /etc/firewall.user
+    echo "$FW2" >> /etc/firewall.user
 
     # Determining uhttpd/httpd_gargoyle for transparent pixel support
     if [ "$TRANS" = "Y" ]
@@ -266,6 +270,10 @@ remove_config()
 
     # Remove firewall rules
     sed -i '/--to-ports 53/d' /etc/firewall.user
+    
+    # Remove Tor workarounds
+    uci del_list dhcp.@dnsmasq[0].server > /dev/null 2>&1 && uci commit
+    uci set dhcp.@dnsmasq[0].noresolv='0' > /dev/null 2>&1 && uci commit
 
     # Remove proxying
     uci delete uhttpd.main.error_page > /dev/null 2>&1 && uci commit
