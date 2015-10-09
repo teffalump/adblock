@@ -133,10 +133,20 @@ add_config()
         uci set dhcp.@dnsmasq[0].noresolv='1' > /dev/null &2>1 && uci commit
         uci add_list dhcp.@dnsmasq[0].server="$TORIP" > /dev/null &2>1 && uci commit
     fi
-    
+
     # Add firewall rules
     echo "$FW1" >> /etc/firewall.user
     echo "$FW2" >> /etc/firewall.user
+
+    # Provide hint if localservice is 1
+    LS=`uci get dhcp.@dnsmasq[0].localservice 2> /dev/null`
+    if [ "$LS" == "1" ]
+    then
+        echo "HINT: localservice is set to 1"
+        echo "    Adblocking (and router DNS) over a VPN may not work"
+        echo "    To allow VPN router DNS, manually set localservice to 0"
+    fi
+
 
     # Determining uhttpd/httpd_gargoyle for transparent pixel support
     if [ "$TRANS" = "Y" ]
