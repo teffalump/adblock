@@ -125,7 +125,7 @@ add_config()
     echo "$CRON" >> /etc/crontabs/root
 
     #Update dnsmasq config for Tor
-    TOR=`uci get tor.global.enabled`
+    TOR=`uci get tor.global.enabled 2> /dev/null`
     if [ "$TOR" == "1" ]
     then
         TORPORT=`uci get tor.client.dns_port`
