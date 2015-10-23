@@ -210,7 +210,7 @@ update_blocklist()
     #Filter (if applicable)
     if [ -s "/etc/white.list" ]
     then
-        #Filter the blacklist, supressing whitelist matches
+        #Filter the blacklist, suppressing whitelist matches
         #  This is relatively slow =-(
         echo 'Filtering white list...'
         egrep -v "^[[:space:]]*$" /etc/white.list | awk '/^[^#]/ {sub(/\r$/,"");print $1}' | grep -vf - /tmp/block.build.before > /etc/block.hosts
