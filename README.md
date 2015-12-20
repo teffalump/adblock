@@ -1,3 +1,9 @@
+**Others have recently developed packages for this same functionality, and done it better than anything I could do. Use the packages instead of this script:**
+
+- [Gargoyle package](https://github.com/lantis1008/gargoyle-plugin-adblock) by @lantis1008
+
+- [OpenWRT package](https://github.com/openwrt/packages/tree/master/net/adblock/files) by @dibdot
+
 ## Description
 
 In its basic usage, this script will modify the router such that blocked addresses are null routed and unreachable. Since the address blocklist is full of advertising, malware, and tracking servers, this setup is generally a good thing. In addition, the router will update the blocklist weekly. However, the blocking is leaky, so do not expect everything to be blocked.
